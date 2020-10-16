@@ -40,10 +40,10 @@ app.post('/api/notes', (req, res) => {
 
 //  ------ Delete note ------
 
-app.delete("/api/notes/:id", function(req, res) {
-    req.params.id
+app.delete("/api/notes/:id", (req, res) => {
+    let id = req.params.id
     notes = notes.filter(n => {
-        if (req.params.id === n.id) {
+        if (id === n.id) {
             return false
         } else {
             return true
