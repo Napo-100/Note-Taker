@@ -4,7 +4,7 @@ const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
 const path = require('path');
-const notes = require('./db/db.json');
+let notes = require('./db/db.json');
 const { v4: uuidv4 } = require('uuid');
 const fs = require ('fs')
 
@@ -27,6 +27,22 @@ app.get('/', (req, res) => {
   app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
   });
+
+//   API ROUTE --------------
+
+app.get('/api/notes', (req, res) => {
+    res.json(notes)
+});
+
+app.post('/api/notes', (req, res) => {
+    console.log(req.body)
+    // Add new id using the uuid module
+    req.body.id = uuidv4();
+
+    notes.push(req.body)
+    fs.writeFileSync('./db/db.json', JSON.stringify(notes));
+    res.json(notes)
+});
 
 
 
