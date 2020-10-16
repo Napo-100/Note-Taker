@@ -1,5 +1,3 @@
-// const apiRoutes = require('./routes/apiRoutes/index');
-// const htmlRoutes = require('./routes/htmlRoutes/index');
 const express = require('express');
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -15,10 +13,7 @@ app.use(express.json());
 
 app.use(express.static('public'));
 
-// app.use('/api', apiRoutes);
-// app.use('/', htmlRoutes);
-
-//  HTML ROUTE ------------
+//  ------ HTML ROUTE ------
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
@@ -28,14 +23,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/notes.html'));
   });
 
-//   API ROUTE --------------
+//  ------ API ROUTE ------
 
 app.get('/api/notes', (req, res) => {
     res.json(notes)
 });
 
 app.post('/api/notes', (req, res) => {
-    console.log(req.body)
     // Add new id using the uuid module
     req.body.id = uuidv4();
 
@@ -44,7 +38,20 @@ app.post('/api/notes', (req, res) => {
     res.json(notes)
 });
 
+//  ------ Delete note ------
 
+app.delete("/api/notes/:id", function(req, res) {
+    req.params.id
+    notes = notes.filter(n => {
+        if (req.params.id === n.id) {
+            return false
+        } else {
+            return true
+        }
+    })
+    fs.writeFileSync('./db/db.json', JSON.stringify(notes));
+    res.json(notes)
+});
 
 
 app.listen(PORT, () => {
