@@ -18,10 +18,10 @@ router.post('/api/notes', (req, res) => {
 
 //  ------ Delete note ------
 
-router.delete("/api/notes/:id", function(req, res) {
-    req.params.id
+router.delete("/api/notes/:id", (req, res) => {
+    let id = req.params.id
     notes = notes.filter(n => {
-        if (req.params.id === n.id) {
+        if (id === n.id) {
             return false
         } else {
             return true
